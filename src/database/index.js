@@ -5,4 +5,4 @@ import User from '../models/User.js';
 const connection = new Sequelize(databaseConfig);
 const models = [User];
 
-models.forEach((model) => model.init(connection))
+models.forEach((model) => model.init(connection));

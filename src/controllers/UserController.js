@@ -5,30 +5,85 @@ class UserController {
     try {
       const novoUser = await User.create(req.body);
 
-      res.json(novoUser);
+      return res.json(novoUser);
     } catch (e) {
-      console.log('erro aqui:', e);
-      res.status(400).json({
+      return res.status(400).json({
         errors: e.errors.map((err) => err.message),
       });
     }
   }
 
   async delete(req, res) {
-    const result = await User.destroy({
-      where: {
-        id: 1,
-      },
-    });
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(400).json('Missing ID');
+      }
 
-    res.json(result);
+      const user = await User.findByPk(id);
+
+      if (!user) {
+        return res.status(400).json('User does not exist');
+      }
+
+      await user.destroy();
+      return res.json(user);
+    } catch (e) {
+      return null;
+    }
   }
 
-  index(req, res) {
-    console.log('chegou em home');
-    res.json({
-      msg: 'Ack',
-    });
+  async index(req, res) {
+    try {
+      const users = await User.findAll();
+      return res.json(users);
+    } catch (e) {
+      return res.status(400).json('no users found');
+    }
+  }
+
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(400).json('Missing ID');
+      }
+
+      const user = await User.findByPk(id);
+
+      if (!user) {
+        return res.status(400).json('User does not exist');
+      }
+      console.log('nem executa aqui', user);
+      await user.update(req.body);
+      return res.json(user);
+    } catch (e) {
+      console.log('erro aqui', e);
+      return res.status(400).json({
+        errors: e.errors.map((err) => err.message),
+      });
+    }
+  }
+
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(400).json('Missing ID');
+      }
+
+      const user = await User.findByPk(id);
+
+      if (!user) {
+        return res.status(400).json({
+          errors: ['User does not exist'],
+        });
+      }
+
+      return res.json(user);
+    } catch (e) {
+      return null;
+    }
   }
 }
 

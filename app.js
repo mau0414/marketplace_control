@@ -8,7 +8,6 @@ import userRoutes from './src/routes/user.js';
 
 class App {
   constructor() {
-    console.log('isso esta sendo milagrosamente executado');
     this.app = express();
     this.middlewares();
     this.routes();
