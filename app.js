@@ -5,6 +5,7 @@ dotenv.config();
 
 import './src/database';
 import userRoutes from './src/routes/user.js';
+import tokenRoutes from './src/routes/token.js';
 
 class App {
   constructor() {
@@ -20,6 +21,7 @@ class App {
 
   routes() {
     this.app.use('/users', userRoutes);
+    this.app.use('/tokens', tokenRoutes);
   }
 }
 
